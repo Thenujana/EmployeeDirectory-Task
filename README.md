@@ -63,3 +63,10 @@ Welcome message with the name of the Admin
 
 <img width="621" height="886" alt="Screenshot 2025-12-06 163707" src="https://github.com/user-attachments/assets/78799473-f02d-43d0-bc98-59ea7efd0dad" />
 
+
+# Details Page 
+Chart from chart js to vizualaze the number of employees in each department 
+Search function (Filters by Name, Department)
+Option to export the employee list as a PDF
+<img width="1919" height="906" alt="Screenshot 2025-12-06 181651" src="https://github.com/user-attachments/assets/f6c6f2a6-591c-4cf7-9d9b-23af1166d060" />
+
