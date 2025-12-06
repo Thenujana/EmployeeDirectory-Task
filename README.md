@@ -53,3 +53,13 @@ Blade templates
 <img width="1919" height="912" alt="Screenshot 2025-12-06 143559" src="https://github.com/user-attachments/assets/1df212c6-cd90-44cc-b979-73692ee644bb" />
 
 <img width="525" height="775" alt="Screenshot 2025-12-06 120539" src="https://github.com/user-attachments/assets/42b55573-c2f5-44aa-ad2e-fe3175f3f9df" />
+<img width="528" height="462" alt="image" src="https://github.com/user-attachments/assets/d0865a36-d79a-4675-bf72-8abcb9fd2ba6" />
+
+# Landing Admin Page 
+Welcome message with the name of the Admin 
+<img width="1915" height="916" alt="Screenshot 2025-12-06 163629" src="https://github.com/user-attachments/assets/1d6988bd-e22c-422b-b53a-33e5bba4a61e" />
+# Mobile View
+<img width="623" height="897" alt="Screenshot 2025-12-06 163649" src="https://github.com/user-attachments/assets/6c75aae6-82b6-41bc-ae8d-7d8b1c1e0283" />
+
+<img width="621" height="886" alt="Screenshot 2025-12-06 163707" src="https://github.com/user-attachments/assets/78799473-f02d-43d0-bc98-59ea7efd0dad" />
+
