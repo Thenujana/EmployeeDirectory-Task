@@ -3,95 +3,137 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Department;
+use App\Models\EmployeeImage;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
-        $employees = Employee::with('department')->paginate(10);
-    return view('employees.index', compact('employees'));
+      
+        $employees = Employee::with(['department', 'images'])->paginate(10);
+
+        
+        $departmentCounts = Employee::selectRaw('department_id, COUNT(*) as total')
+            ->groupBy('department_id')
+            ->pluck('total', 'department_id')
+            ->toArray();
+
+        $departmentNames = Department::whereIn('id', array_keys($departmentCounts))
+            ->pluck('name', 'id')
+            ->toArray();
+
+        
+        $chartLabels = array_values($departmentNames);
+        $chartData = array_values($departmentCounts);
+
+        return view('employees.index', compact(
+            'employees',
+            'chartLabels',
+            'chartData'
+        ));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    
     public function create()
     {
-         $departments = Department::all();
-    return view('employees.create', compact('departments'));
+        $departments = Department::all();
+        return view('employees.create', compact('departments'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+   
     public function store(Request $request)
     {
         $request->validate([
-        'first_name' => 'required',
-        'email' => 'required|email|unique:employees',
-        'department_id' => 'required',
-        'images.*' => 'image|mimes:jpg,png,jpeg|max:2048'
-    ]);
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required|email|unique:employees',
+            'job_title' => 'required',
+            'department_id' => 'required',
+            'status' => 'required',
+            'images.*' => 'image|mimes:jpg,png,jpeg|max:2048'
+        ]);
 
-    $employee = Employee::create($request->all());
+       
+        $employee = Employee::create($request->only([
+            'first_name', 'last_name', 'email', 'job_title', 'department_id', 'status'
+        ]));
 
-    if ($request->hasFile('images')) {
-        foreach ($request->file('images') as $img) {
-            $name = time() . '_' . $img->getClientOriginalName();
-            $img->move(public_path('uploads/employees'), $name);
+       
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $img) {
+                $name = time().'_'.$img->getClientOriginalName();
+                $img->move(public_path('uploads/employees'), $name);
 
-            EmployeeImage::create([
-                'employee_id' => $employee->id,
-                'filename' => $name
-            ]);
+                EmployeeImage::create([
+                    'employee_id' => $employee->id,
+                    'filename' => $name
+                ]);
+            }
         }
+
+        return redirect()->route('employees.index')
+            ->with('success', 'Employee added successfully');
     }
 
-    return redirect()->route('employees.index')->with('success', 'Employee added');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Employee $employee)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
+    
     public function edit(Employee $employee)
     {
         $departments = Department::all();
-    return view('employees.edit', compact('employee', 'departments'));
+        return view('employees.edit', compact('employee', 'departments'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(Request $request, Employee $employee)
     {
-            $request->validate([
-        'first_name' => 'required',
-        'email' => 'required|email|unique:employees,email,' . $employee->id,
-    ]);
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required|email|unique:employees,email,' . $employee->id,
+            'job_title' => 'required',
+            'department_id' => 'required',
+            'status' => 'required',
+            'images.*' => 'image|mimes:jpg,png,jpeg|max:2048'
+        ]);
 
-    $employee->update($request->all());
+      
+        $employee->update($request->only([
+            'first_name', 'last_name', 'email', 'job_title', 'department_id', 'status'
+        ]));
 
-    return redirect()->route('employees.index')->with('success', 'Updated successfully');
+       
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $img) {
+                $name = time().'_'.$img->getClientOriginalName();
+                $img->move(public_path('uploads/employees'), $name);
+
+                EmployeeImage::create([
+                    'employee_id' => $employee->id,
+                    'filename' => $name
+                ]);
+            }
+        }
+
+        return redirect()->route('employees.index')
+            ->with('success', 'Employee updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+   
     public function destroy(Employee $employee)
     {
-            $employee->delete();
-    return redirect()->route('employees.index')->with('success', 'Deleted');
+        foreach ($employee->images as $img) {
+            $path = public_path('uploads/employees/' . $img->filename);
+            if (file_exists($path)) {
+                unlink($path);
+            }
+            $img->delete();
+        }
+
+        $employee->delete();
+
+        return redirect()->route('employees.index')
+            ->with('success', 'Employee deleted successfully');
     }
 }
