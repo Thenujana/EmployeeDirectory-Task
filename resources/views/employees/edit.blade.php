@@ -64,7 +64,6 @@
             </select>
         </div>
 
-        <!-- Current Images with Delete Button -->
         <div class="mb-3">
             <label>Current Images</label><br>
             @foreach($employee->images as $img)

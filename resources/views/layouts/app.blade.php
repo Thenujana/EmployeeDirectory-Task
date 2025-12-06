@@ -7,6 +7,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
+   
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
     <style>
@@ -16,8 +17,21 @@
         color: var(--text-color);
     }
 
+    :root {
+        --bg-color: #f8f9fa;
+        --text-color: #343a40;
+        --card-bg: #ffffff;
+        --table-bg: #ffffff;
+        --navbar-bg: #212529;
+    }
 
-   
+    .dark-mode {
+        --bg-color: #1a1d21;
+        --text-color: #eaeaea;
+        --card-bg: #2c2f33;
+        --table-bg: #2c2f33;
+        --navbar-bg: #111416;
+    }
 
     .navbar {
         background-color: var(--navbar-bg) !important;
