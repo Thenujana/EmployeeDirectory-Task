@@ -32,7 +32,7 @@ Success/error toast notifications.
 
 # Clone the repository
 
-git clone https://github.com/yourusername/employee-management.git
+git clone (repo link )
 cd employee-management
 
 # Technologies
